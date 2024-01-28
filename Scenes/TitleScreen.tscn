@@ -1,0 +1,119 @@
+[gd_scene load_steps=12 format=3 uid="uid://de778d4kq8l2r"]
+
+[ext_resource type="Script" path="res://Scripts/TitleScreen.gd" id="1_dm5c8"]
+[ext_resource type="Texture2D" uid="uid://d3l8624l6xdbx" path="res://Textures/UI/startbutton.png" id="1_r6ocx"]
+[ext_resource type="Texture2D" uid="uid://cvqixhkr83xus" path="res://Textures/UI/startbuttonclick.png" id="2_ik2sf"]
+[ext_resource type="Texture2D" uid="uid://daov65fung3ep" path="res://Textures/UI/startbuttonhover.png" id="3_yigpw"]
+
+[sub_resource type="Gradient" id="Gradient_k1bjp"]
+colors = PackedColorArray(0, 0.305882, 1, 1, 0.607843, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ovbc1"]
+gradient = SubResource("Gradient_k1bjp")
+fill_from = Vector2(0.0245399, 0.291411)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="Animation" id="Animation_e6qa0"]
+resource_name = "fadeour"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer/TextureRect:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 0.2),
+"update": 0,
+"values": [Vector2(1152, 0), Vector2(-545, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_q0l4g"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer/TextureRect:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1152, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ibxbt"]
+_data = {
+"RESET": SubResource("Animation_q0l4g"),
+"fadeour": SubResource("Animation_e6qa0")
+}
+
+[sub_resource type="Gradient" id="Gradient_f28it"]
+interpolation_mode = 2
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qrnch"]
+gradient = SubResource("Gradient_f28it")
+
+[node name="TitleScreen" type="Node2D" node_paths=PackedStringArray("transition")]
+script = ExtResource("1_dm5c8")
+transition = NodePath("AnimationPlayer")
+
+[node name="Background" type="TextureRect" parent="."]
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 1153.0
+offset_bottom = 649.0
+texture = SubResource("GradientTexture2D_ovbc1")
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 269.5
+offset_right = 882.5
+offset_bottom = 295.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 21
+theme_override_font_sizes/font_size = 216
+text = "Game"
+
+[node name="TextureButton" type="TextureButton" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 436.0
+offset_top = 320.0
+offset_right = 716.0
+offset_bottom = 465.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("1_r6ocx")
+texture_pressed = ExtResource("2_ik2sf")
+texture_hover = ExtResource("3_yigpw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ibxbt")
+}
+
+[node name="TextureRect" type="TextureRect" parent="AnimationPlayer"]
+offset_left = 1152.0
+offset_right = 1697.0
+offset_bottom = 648.0
+texture = SubResource("GradientTexture1D_qrnch")
+
+[node name="ColorRect" type="ColorRect" parent="AnimationPlayer/TextureRect"]
+layout_mode = 0
+offset_left = 545.0
+offset_right = 1697.0
+offset_bottom = 648.0
+color = Color(0, 0, 0, 1)
+
+[connection signal="pressed" from="TextureButton" to="." method="play"]
